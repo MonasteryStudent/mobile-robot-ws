@@ -25,8 +25,6 @@ mobile-robot-ws/
     └── mobile_robot_description/
 ```
 
-The workspace will be extended with additional ROS 2 packages as the project grows.
-
 ## Requirements
 
 - Ubuntu 24.04
@@ -35,8 +33,6 @@ The workspace will be extended with additional ROS 2 packages as the project gro
 - Xacro
 - Gazebo
 - ros_gz
-
-Additional dependencies such as Gazebo will be added as the project progresses.
 
 ## Build
 
