@@ -2,22 +2,27 @@
 
 A learning project focused on developing a mobile robotic system with ROS 2.
 
+## Current Status
+
+- Custom robot description created using URDF and Xacro.
+- Robot model visualized in RViz.
+- Robot simulated in Gazebo with differential-drive control and joint-state publishing.
+
 ## Project Goals
 
-- Design and structure a custom robot description using URDF and Xacro.
-- Visualize and validate the robot model in RViz.
-- Simulate the robot and its LiDAR and IMU sensors in Gazebo.
+- Add and simulate LiDAR and IMU sensors.
 - Implement action-based robot navigation using ROS 2 actions.
 - Extend the system toward localization, SLAM, and autonomous navigation using the Nav2 stack.
 
 ## Workspace Structure
 
 ```text
-src/
-└── mobile_robot_description/
-    ├── launch/
-    ├── rviz/
-    └── urdf/
+mobile-robot-ws/
+├── README.md
+├── scripts/
+└── src/
+    ├── mobile_robot_bringup/
+    └── mobile_robot_description/
 ```
 
 The workspace will be extended with additional ROS 2 packages as the project grows.
@@ -28,6 +33,8 @@ The workspace will be extended with additional ROS 2 packages as the project gro
 - ROS 2 Jazzy
 - RViz
 - Xacro
+- Gazebo
+- ros_gz
 
 Additional dependencies such as Gazebo will be added as the project progresses.
 
@@ -55,4 +62,10 @@ Visualize the current robot description in RViz:
 
 ```bash
 ros2 launch mobile_robot_description display.launch.xml
+```
+
+Run the current robot simulation in Gazebo:
+
+```bash
+ros2 launch mobile_robot_bringup mobile_robot.launch.xml
 ```
