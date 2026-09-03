@@ -7,11 +7,11 @@ A learning project focused on developing a mobile robotic system with ROS 2.
 - Custom robot description created using URDF and Xacro.
 - Robot model visualized in RViz.
 - Robot simulated in Gazebo with differential-drive control and joint-state publishing.
+- Action-based robot navigation implemented using ROS 2 actions.
 
 ## Project Goals
 
 - Add and simulate LiDAR and IMU sensors.
-- Implement action-based robot navigation using ROS 2 actions.
 - Extend the system toward localization, SLAM, and autonomous navigation using the Nav2 stack.
 
 ## Workspace Structure
@@ -22,7 +22,9 @@ mobile-robot-ws/
 ├── scripts/
 └── src/
     ├── mobile_robot_bringup/
-    └── mobile_robot_description/
+    ├── mobile_robot_description/
+    ├── mobile_robot_interfaces/
+    └── mobile_robot_navigation/
 ```
 
 ## Requirements
