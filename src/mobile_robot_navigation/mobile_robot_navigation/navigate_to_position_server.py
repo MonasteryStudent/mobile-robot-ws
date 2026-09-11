@@ -14,6 +14,8 @@ from mobile_robot_interfaces.action import NavigateToPosition
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
 
+from collections import deque
+
 
 class NavigateToPositionServerNode(Node):
 
@@ -35,11 +37,14 @@ class NavigateToPositionServerNode(Node):
 
         self.max_linear_velocity = 0.6
 
-        # Shared navigation state used across the action, timer,
-        # and odometry callbacks.
+        # Shared navigation state used across callbacks.
         self.state = "IDLE"
-        self.goal_result = None
+
+        # The active goal is executed by the state machine, while additional
+        # accepted goals wait in FIFO order.
         self.active_goal_handle = None
+        self.active_goal_future = None
+        self.goal_queue = deque()
 
         # Allows callbacks in this group to be processed while the asynchronous
         # execute callback is suspended waiting for the navigation result.
@@ -89,12 +94,18 @@ class NavigateToPositionServerNode(Node):
             cmd = Twist()
             self.cmd_vel_pub.publish(cmd)
 
-            self.active_goal_handle.canceled()
-            self.goal_result = "CANCELED"
-            self.state = "IDLE"
+            result = NavigateToPosition.Result()
+            result.success = False
+            result.final_x = self.current_x
+            result.final_y = self.current_y
 
-            # Resume the suspended execute callback so it can return the result.
-            self.goal_completion_future.set_result(True)
+            self.active_goal_handle.canceled()
+            self.active_goal_future.set_result(result)
+
+            self.active_goal_handle = None
+            self.active_goal_future = None
+            self.start_next_goal()
+            
             return
 
         dx = self.target_x - self.current_x
@@ -135,17 +146,22 @@ class NavigateToPositionServerNode(Node):
 
         elif self.state == "DRIVING":
             if distance <= self.distance_tolerance:
-                # Stop the robot once the target position is reached.
                 cmd.linear.x = 0.0
                 cmd.angular.z = 0.0
                 self.cmd_vel_pub.publish(cmd)
 
-                self.active_goal_handle.succeed()
-                self.goal_result = "SUCCEEDED"
-                self.state = "IDLE"
+                result = NavigateToPosition.Result()
+                result.success = True
+                result.final_x = self.current_x
+                result.final_y = self.current_y
 
-                # Signal the execute callback that navigation has finished.
-                self.goal_completion_future.set_result(True)
+                self.active_goal_handle.succeed()
+                self.active_goal_future.set_result(result)
+
+                self.active_goal_handle = None
+                self.active_goal_future = None
+                self.start_next_goal()
+
                 return
 
             if abs(angle_error) > self.angle_tolerance:
@@ -189,28 +205,34 @@ class NavigateToPositionServerNode(Node):
         self.get_logger().info("Received goal request.")
         return GoalResponse.ACCEPT
 
-    async def execute_callback(self, goal_handle: ServerGoalHandle):
-        self.goal_result = None
+    def start_next_goal(self):
+        if not self.goal_queue:
+            self.active_goal_handle = None
+            self.active_goal_future = None
+            self.state = "IDLE"
+            return
 
-        self.target_x = goal_handle.request.target_x
-        self.target_y = goal_handle.request.target_y
-        self.active_goal_handle = goal_handle
+        self.active_goal_handle, self.active_goal_future = self.goal_queue.popleft()
 
-        # The timer-based state machine performs the actual navigation.
-        # This future is completed by the control callback once the goal
-        # succeeds or is canceled.
-        self.goal_completion_future = Future()
+        self.target_x = self.active_goal_handle.request.target_x
+        self.target_y = self.active_goal_handle.request.target_y
 
         self.state = "ROTATING"
 
-        # Suspend this coroutine without blocking the executor.
-        await self.goal_completion_future
+        self.get_logger().info(
+            f"Starting next goal: "
+            f"x={self.target_x:.2f}, y={self.target_y:.2f}"
+        )
 
-        result = NavigateToPosition.Result()
+    async def execute_callback(self, goal_handle: ServerGoalHandle):
+        completion_future = Future()
 
-        result.success = self.goal_result == "SUCCEEDED"
-        result.final_x = self.current_x
-        result.final_y = self.current_y
+        self.goal_queue.append((goal_handle, completion_future))
+
+        if self.active_goal_handle is None:
+            self.start_next_goal()
+
+        result = await completion_future
 
         return result
 
