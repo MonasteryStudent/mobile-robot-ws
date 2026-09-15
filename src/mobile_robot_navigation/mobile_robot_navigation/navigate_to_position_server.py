@@ -84,7 +84,31 @@ class NavigateToPositionServerNode(Node):
 
         self.get_logger().info("Action server has been started.")
 
+    # Process cancellation requests for goals that are still waiting in the queue.
+    def process_queued_cancellations(self):
+        remaining_goals = deque()
+
+        while self.goal_queue:
+            goal_handle, completion_future = self.goal_queue.popleft()
+
+            if goal_handle.is_cancel_requested:
+                result = NavigateToPosition.Result()
+                result.success = False
+                result.final_x = self.current_x
+                result.final_y = self.current_y
+
+                goal_handle.canceled()
+                completion_future.set_result(result)
+
+                self.get_logger().info("Canceled queued goal.")
+            else:
+                remaining_goals.append((goal_handle, completion_future))
+
+        self.goal_queue = remaining_goals
+
     def control_callback(self):
+        self.process_queued_cancellations()
+
         # No navigation goal is currently active.
         if self.state == "IDLE":
             return

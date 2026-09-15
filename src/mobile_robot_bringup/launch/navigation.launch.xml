@@ -7,4 +7,16 @@
         output="screen"
     />
 
+    <node
+        pkg="mobile_robot_navigation"
+        exec="navigate_to_position_client"
+        name="navigate_to_position_clien"
+        output="screen"
+    >
+        <param name="target_x" value="5.0" />
+        <param name="target_y" value="2.0" />
+        <param name="show_feedback" value="False" />
+        <param name="cancel_service_name" value="cancel_navigation" />
+    </node> 
+
 </launch>

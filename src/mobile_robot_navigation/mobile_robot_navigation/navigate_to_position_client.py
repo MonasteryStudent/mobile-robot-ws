@@ -21,6 +21,14 @@ class NavigateToPositionClientNode(Node):
         self.declare_parameter("target_x", 1.0)
         self.declare_parameter("target_y", 1.0)
         self.declare_parameter("show_feedback", False)
+        self.declare_parameter(
+            "cancel_service_name",
+            "cancel_navigation"
+        )
+
+        cancel_service_name = self.get_parameter(
+            "cancel_service_name"
+        ).value
 
         self.action_client = ActionClient(
             self,
@@ -30,7 +38,7 @@ class NavigateToPositionClientNode(Node):
 
         self.cancel_service = self.create_service(
             Trigger,
-            "cancel_navigation",
+            cancel_service_name,
             self.cancel_service_callback
         )
 
