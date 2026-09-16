@@ -2,12 +2,11 @@
 
 import rclpy
 
-from rclpy.node import Node
-from rclpy.action import ActionClient
-
-from std_srvs.srv import Trigger
 from action_msgs.msg import GoalStatus
 from mobile_robot_interfaces.action import NavigateToPosition
+from rclpy.node import Node
+from rclpy.action import ActionClient
+from std_srvs.srv import Trigger
 
 
 class NavigateToPositionClientNode(Node):
@@ -41,33 +40,6 @@ class NavigateToPositionClientNode(Node):
             cancel_service_name,
             self.cancel_service_callback
         )
-
-    def cancel_service_callback(self, request, response):
-        if not self.goal_active:
-            response.success = False
-            response.message = "No active goal."
-            return response
-
-        # Send the cancel request asynchronously and process the server response
-        # once it becomes available.
-        cancel_future = self.goal_handle.cancel_goal_async()
-        cancel_future.add_done_callback(
-            self.cancel_response_callback
-        )
-
-        response.success = True
-        response.message = "Cancel request sent."
-        return response
-    
-    def cancel_response_callback(self, future):
-        response = future.result()
-
-        # goals_canceling contains the goals whose cancellation was accepted
-        # for this specific cancel request.
-        if len(response.goals_canceling) > 0:
-            self.get_logger().info("Goal cancellation accepted.")
-        else:
-            self.get_logger().info("Goal cancellation rejected.")
 
     def send_goal(self):
         goal = NavigateToPosition.Goal()
@@ -105,6 +77,17 @@ class NavigateToPositionClientNode(Node):
             self.result_callback
         )
 
+    def feedback_callback(self, feedback_msg):
+        # Feedback is always received, but logging can be disabled by parameter.
+        if not self.get_parameter("show_feedback").value:
+            return        
+    
+        distance = feedback_msg.feedback.distance_remaining
+
+        self.get_logger().info(
+            f"Distance remaining: {distance:.2f}"
+        )
+
     def result_callback(self, future):
         self.goal_active = False
 
@@ -131,16 +114,32 @@ class NavigateToPositionClientNode(Node):
             f"final_y={result.final_y:.2f}"
         )
 
-    def feedback_callback(self, feedback_msg):
-        # Feedback is always received, but logging can be disabled by parameter.
-        if not self.get_parameter("show_feedback").value:
-            return        
-    
-        distance = feedback_msg.feedback.distance_remaining
+    def cancel_service_callback(self, request, response):
+        if not self.goal_active:
+            response.success = False
+            response.message = "No active goal."
+            return response
 
-        self.get_logger().info(
-            f"Distance remaining: {distance:.2f}"
+        # Send the cancel request asynchronously and process the server response
+        # once it becomes available.
+        cancel_future = self.goal_handle.cancel_goal_async()
+        cancel_future.add_done_callback(
+            self.cancel_response_callback
         )
+
+        response.success = True
+        response.message = "Cancel request sent."
+        return response
+    
+    def cancel_response_callback(self, future):
+        response = future.result()
+
+        # goals_canceling contains the goals whose cancellation was accepted
+        # for this specific cancel request.
+        if len(response.goals_canceling) > 0:
+            self.get_logger().info("Goal cancellation accepted.")
+        else:
+            self.get_logger().info("Goal cancellation rejected.")
 
 
 def main(args=None):
