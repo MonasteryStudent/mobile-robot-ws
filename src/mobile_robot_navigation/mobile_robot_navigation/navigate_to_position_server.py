@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import math
+from collections import deque
 
 import rclpy
 
@@ -13,8 +14,6 @@ from rclpy.task import Future
 from mobile_robot_interfaces.action import NavigateToPosition
 from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Twist
-
-from collections import deque
 
 
 class NavigateToPositionServerNode(Node):
@@ -29,17 +28,35 @@ class NavigateToPositionServerNode(Node):
         self.current_y = 0.0
         self.current_yaw = 0.0
 
-        self.angle_tolerance = 0.05
-        self.distance_tolerance = 0.1
+        self.declare_parameter("angle_tolerance", 0.05)
+        self.declare_parameter("distance_tolerance", 0.1)
+        self.declare_parameter("k_angular", 1.0)
+        self.declare_parameter("k_linear", 0.8)
+        self.declare_parameter("max_linear_velocity", 0.6)
 
-        self.k_angular = 1.0
-        self.k_linear = 0.8
+        self.angle_tolerance = self.get_parameter(
+            "angle_tolerance"
+        ).value
 
-        self.max_linear_velocity = 0.6
+        self.distance_tolerance = self.get_parameter(
+            "distance_tolerance"
+        ).value
 
-        # Shared navigation state used across callbacks.
+        self.k_angular = self.get_parameter(
+            "k_angular"
+        ).value
+
+        self.k_linear = self.get_parameter(
+            "k_linear"
+        ).value
+
+        self.max_linear_velocity = self.get_parameter(
+            "max_linear_velocity"
+        ).value
+
+        # Current state of the timer-based navigation state machine.
         self.state = "IDLE"
-
+        
         # The active goal is executed by the state machine, while additional
         # accepted goals wait in FIFO order.
         self.active_goal_handle = None
@@ -76,13 +93,61 @@ class NavigateToPositionServerNode(Node):
             self, 
             NavigateToPosition, 
             "navigate_to_position",
-            execute_callback=self.execute_callback,
-            cancel_callback=self.cancel_callback,
             goal_callback=self.goal_callback,
+            cancel_callback=self.cancel_callback,
+            execute_callback=self.execute_callback,
             callback_group=self.callback_group
         )
 
         self.get_logger().info("Action server has been started.")
+
+    def goal_callback(self, goal_request):
+        self.get_logger().info("Received goal request.")
+
+        if not math.isfinite(goal_request.target_x):
+            self.get_logger().warning("Rejected goal: target_x is not finite.")
+            return GoalResponse.REJECT
+
+        if not math.isfinite(goal_request.target_y):
+            self.get_logger().warning("Rejected goal: target_y is not finite.")
+            return GoalResponse.REJECT
+
+        return GoalResponse.ACCEPT
+
+    def cancel_callback(self, goal_handle):
+        self.get_logger().info("Received cancel request.")
+        return CancelResponse.ACCEPT
+
+    async def execute_callback(self, goal_handle: ServerGoalHandle):
+        completion_future = Future()
+
+        self.goal_queue.append((goal_handle, completion_future))
+
+        if self.active_goal_handle is None:
+            self.start_next_goal()
+
+        result = await completion_future
+
+        return result
+
+    def start_next_goal(self):
+        if not self.goal_queue:
+            self.active_goal_handle = None
+            self.active_goal_future = None
+            self.state = "IDLE"
+            return
+
+        self.active_goal_handle, self.active_goal_future = self.goal_queue.popleft()
+
+        self.target_x = self.active_goal_handle.request.target_x
+        self.target_y = self.active_goal_handle.request.target_y
+
+        self.state = "ROTATING"
+
+        self.get_logger().info(
+            f"Starting next goal: "
+            f"x={self.target_x:.2f}, y={self.target_y:.2f}"
+        )
 
     # Process cancellation requests for goals that are still waiting in the queue.
     def process_queued_cancellations(self):
@@ -126,16 +191,18 @@ class NavigateToPositionServerNode(Node):
             self.active_goal_handle.canceled()
             self.active_goal_future.set_result(result)
 
+            self.get_logger().info("Canceled active goal.")
+
             self.active_goal_handle = None
             self.active_goal_future = None
             self.start_next_goal()
-            
+
             return
 
         dx = self.target_x - self.current_x
         dy = self.target_y - self.current_y
 
-        distance = math.sqrt(dx ** 2 + dy ** 2)
+        distance = math.hypot(dx, dy)
 
         feedback = NavigateToPosition.Feedback()
         feedback.distance_remaining = distance
@@ -182,6 +249,11 @@ class NavigateToPositionServerNode(Node):
                 self.active_goal_handle.succeed()
                 self.active_goal_future.set_result(result)
 
+                self.get_logger().info(
+                    f"Goal reached: x={self.current_x:.2f}, "
+                    f"y={self.current_y:.2f}"
+                )
+
                 self.active_goal_handle = None
                 self.active_goal_future = None
                 self.start_next_goal()
@@ -221,45 +293,6 @@ class NavigateToPositionServerNode(Node):
             1.0 - 2.0 * (q.y * q.y + q.z * q.z)
         )
 
-    def cancel_callback(self, goal_handle):
-        self.get_logger().info("Received cancel request.")
-        return CancelResponse.ACCEPT    
-
-    def goal_callback(self, goal_request):
-        self.get_logger().info("Received goal request.")
-        return GoalResponse.ACCEPT
-
-    def start_next_goal(self):
-        if not self.goal_queue:
-            self.active_goal_handle = None
-            self.active_goal_future = None
-            self.state = "IDLE"
-            return
-
-        self.active_goal_handle, self.active_goal_future = self.goal_queue.popleft()
-
-        self.target_x = self.active_goal_handle.request.target_x
-        self.target_y = self.active_goal_handle.request.target_y
-
-        self.state = "ROTATING"
-
-        self.get_logger().info(
-            f"Starting next goal: "
-            f"x={self.target_x:.2f}, y={self.target_y:.2f}"
-        )
-
-    async def execute_callback(self, goal_handle: ServerGoalHandle):
-        completion_future = Future()
-
-        self.goal_queue.append((goal_handle, completion_future))
-
-        if self.active_goal_handle is None:
-            self.start_next_goal()
-
-        result = await completion_future
-
-        return result
-
 
 def main(args=None):
     rclpy.init(args=args)
@@ -271,7 +304,7 @@ def main(args=None):
     rclpy.spin(node)
 
     node.destroy_node()
-    rclpy.shutdown()   
+    rclpy.shutdown()
 
 
 if __name__ == "__main__":

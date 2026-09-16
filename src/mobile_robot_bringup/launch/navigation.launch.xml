@@ -5,7 +5,13 @@
         exec="navigate_to_position_server"
         name="navigate_to_position_server"
         output="screen"
-    />
+    >
+        <param name="angle_tolerance" value="0.05" />
+        <param name="distance_tolerance" value="0.1" />
+        <param name="k_angular" value="1.0" />
+        <param name="k_linear" value="0.8" />
+        <param name="max_linear_velocity" value="0.6" />
+    </node>    
 
     <node
         pkg="mobile_robot_navigation"
