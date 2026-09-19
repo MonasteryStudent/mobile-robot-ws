@@ -12,3 +12,6 @@ __pycache__/
 
 # Colcon
 .colcon/
+
+# OS files
+*:Zone.Identifier

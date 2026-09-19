@@ -18,7 +18,7 @@ A learning project focused on developing a mobile robotic system with ROS 2.
 
 ```text
 mobile-robot-ws/
-├── README.md
+├── docs/
 ├── scripts/
 └── src/
     ├── mobile_robot_bringup/
