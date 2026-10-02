@@ -8,6 +8,7 @@ A learning project focused on developing a mobile robotic system with ROS 2.
 - Robot model visualized in RViz.
 - Robot simulated in Gazebo with differential-drive control and joint-state publishing.
 - Action-based robot navigation implemented using ROS 2 actions.
+- `ros2_control` integration added with mock hardware, joint-state broadcasting, and differential-drive control.
 
 ## Project Goals
 
@@ -35,6 +36,8 @@ mobile-robot-ws/
 - Xacro
 - Gazebo
 - ros_gz
+- ros2_control
+- ros2_controllers
 
 ## Build
 
@@ -56,14 +59,20 @@ source scripts/setup.sh
 
 ## Run
 
-Visualize the current robot description in RViz:
+Visualize the robot description in RViz:
 
 ```bash
 ros2 launch mobile_robot_description display.launch.xml
 ```
 
-Run the current robot simulation in Gazebo:
+Run the robot simulation in Gazebo:
 
 ```bash
 ros2 launch mobile_robot_bringup mobile_robot.launch.xml
+```
+
+Run the ros2_control setup with mock hardware in RViz:
+
+```bash
+ros2 launch mobile_robot_bringup ros2_control_mock.launch.xml
 ```
