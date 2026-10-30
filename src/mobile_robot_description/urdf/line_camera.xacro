@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <link name="line_camera_link">
+        <visual>
+            <geometry>
+                <box size="0.04 0.04 0.04" />
+            </geometry>
+            <material name="gray" />
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="0.04 0.04 0.04" />
+            </geometry>
+        </collision>
+
+        <xacro:box_inertia
+            m="0.05"
+            x="0.04"
+            y="0.04"
+            z="0.04"
+            o_xyz="0 0 0"
+            o_rpy="0 0 0" />
+    </link>
+
+    <joint name="line_camera_joint" type="fixed">
+        <parent link="base_link" />
+        <child link="line_camera_link" />
+
+        <origin
+            xyz="${base_length / 2.0 + 0.02} 0 ${base_height / 2.0}"
+            rpy="0 ${pi / 2.0} 0" />
+    </joint>
+
+</robot>
