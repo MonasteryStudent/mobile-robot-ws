@@ -9,6 +9,8 @@ A learning project focused on developing a mobile robotic system with ROS 2.
 - Robot simulated in Gazebo with differential-drive control and joint-state publishing.
 - Action-based robot navigation implemented using ROS 2 actions.
 - `ros2_control` integration added with mock hardware, joint-state broadcasting, and differential-drive control.
+- Downward-facing camera simulated in Gazebo, with images bridged to ROS 2.
+- Basic line following implemented using three virtual sensor regions in the camera image, including steering corrections and stopping when no line is detected.
 
 ## Project Goals
 
@@ -25,6 +27,7 @@ mobile-robot-ws/
     ├── mobile_robot_bringup/
     ├── mobile_robot_description/
     ├── mobile_robot_interfaces/
+    ├── mobile_robot_line_following/
     └── mobile_robot_navigation/
 ```
 
@@ -38,6 +41,8 @@ mobile-robot-ws/
 - ros_gz
 - ros2_control
 - ros2_controllers
+- cv_bridge
+- rqt_image_view (optional, for viewing camera images)
 
 ## Build
 
@@ -75,4 +80,22 @@ Run the ros2_control setup with mock hardware in RViz:
 
 ```bash
 ros2 launch mobile_robot_bringup ros2_control_mock.launch.xml
+```
+
+Run the line-following simulation in Gazebo:
+
+```bash
+ros2 launch mobile_robot_bringup line_following.launch.xml
+```
+
+Start the line-following controller in a separate terminal:
+
+```bash
+ros2 run mobile_robot_line_following line_follower
+```
+
+Optionally, view the camera image in another terminal:
+
+```bash
+ros2 run rqt_image_view rqt_image_view
 ```
