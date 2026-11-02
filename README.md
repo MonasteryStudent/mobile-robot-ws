@@ -14,7 +14,6 @@ A learning project focused on developing a mobile robotic system with ROS 2.
 
 ## Project Goals
 
-- Add and simulate LiDAR and IMU sensors.
 - Extend the system toward localization, SLAM, and autonomous navigation using the Nav2 stack.
 
 ## Workspace Structure
@@ -35,14 +34,7 @@ mobile-robot-ws/
 
 - Ubuntu 24.04
 - ROS 2 Jazzy
-- RViz
-- Xacro
-- Gazebo
-- ros_gz
-- ros2_control
-- ros2_controllers
-- cv_bridge
-- rqt_image_view (optional, for viewing camera images)
+- Gazebo Harmonic
 
 ## Build
 
@@ -64,25 +56,49 @@ source scripts/setup.sh
 
 ## Run
 
-Visualize the robot description in RViz:
+Run commands from the workspace root. In each terminal, first load the environment:
+
+```bash
+source scripts/setup.sh
+```
+
+### Robot Visualization
+
+Display the robot model in RViz:
 
 ```bash
 ros2 launch mobile_robot_description display.launch.xml
 ```
 
-Run the robot simulation in Gazebo:
+### Gazebo Simulation
+
+Start the robot simulation:
 
 ```bash
 ros2 launch mobile_robot_bringup mobile_robot.launch.xml
 ```
 
-Run the ros2_control setup with mock hardware in RViz:
+### Action-Based Navigation
+
+Start the Gazebo simulation above, then launch the navigation server and client in a separate terminal:
+
+```bash
+ros2 launch mobile_robot_bringup navigation.launch.xml
+```
+
+The client sends the target position configured in the launch file.
+
+### ros2_control with Mock Hardware
+
+Start the controllers and RViz using mock hardware:
 
 ```bash
 ros2 launch mobile_robot_bringup ros2_control_mock.launch.xml
 ```
 
-Run the line-following simulation in Gazebo:
+### Line Following
+
+Start the line-following simulation:
 
 ```bash
 ros2 launch mobile_robot_bringup line_following.launch.xml
@@ -94,8 +110,10 @@ Start the line-following controller in a separate terminal:
 ros2 run mobile_robot_line_following line_follower
 ```
 
-Optionally, view the camera image in another terminal:
+Optionally, open the camera viewer in another terminal:
 
 ```bash
 ros2 run rqt_image_view rqt_image_view
 ```
+
+Select `/line_camera/image`.
