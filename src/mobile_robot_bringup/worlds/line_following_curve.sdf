@@ -1,0 +1,336 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.9">
+  <world name="line_following">
+    <gravity>0 0 -9.81</gravity>
+    <physics name="default_physics" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <light name="sun" type="directional">
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+      <cast_shadows>true</cast_shadows>
+    </light>
+    <model name="ground">
+      <static>true</static>
+      <link name="ground_link">
+        <collision name="ground_collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="ground_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="straight_line">
+      <static>true</static>
+      <pose>-1.5 0 0.001 0 0 0</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>3 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_00">
+      <static>true</static>
+      <pose>0.026168 0.000685 0.001 0 0 0.026180</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_01">
+      <static>true</static>
+      <pose>0.078432 0.003424 0.001 0 0 0.078540</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_02">
+      <static>true</static>
+      <pose>0.130481 0.008895 0.001 0 0 0.130900</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_03">
+      <static>true</static>
+      <pose>0.182173 0.017082 0.001 0 0 0.183260</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_04">
+      <static>true</static>
+      <pose>0.233365 0.027963 0.001 0 0 0.235619</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_05">
+      <static>true</static>
+      <pose>0.283918 0.041509 0.001 0 0 0.287979</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_06">
+      <static>true</static>
+      <pose>0.333692 0.057682 0.001 0 0 0.340339</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_07">
+      <static>true</static>
+      <pose>0.382552 0.076437 0.001 0 0 0.392699</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_08">
+      <static>true</static>
+      <pose>0.430364 0.097724 0.001 0 0 0.445059</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_09">
+      <static>true</static>
+      <pose>0.476995 0.121484 0.001 0 0 0.497419</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_10">
+      <static>true</static>
+      <pose>0.522320 0.147652 0.001 0 0 0.549779</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_11">
+      <static>true</static>
+      <pose>0.566212 0.176156 0.001 0 0 0.602139</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_12">
+      <static>true</static>
+      <pose>0.608553 0.206919 0.001 0 0 0.654498</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_13">
+      <static>true</static>
+      <pose>0.649225 0.239855 0.001 0 0 0.706858</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_14">
+      <static>true</static>
+      <pose>0.688119 0.274874 0.001 0 0 0.759218</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.08</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>
