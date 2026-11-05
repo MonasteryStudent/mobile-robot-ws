@@ -44,7 +44,7 @@ def build_arc(radius, total_angle_deg, segment_count, overlap):
 
 def main():
     source = WORLD_DIR / "line_following.sdf"
-    target = WORLD_DIR / "line_following_curve.sdf"
+    target = WORLD_DIR / "line_following_oval.sdf"
 
     tree = ET.parse(source)
     world = tree.getroot().find("world")
@@ -58,16 +58,38 @@ def main():
     straight.find("pose").text = "-1.5 0 0.001 0 0 0"
     straight.find(plane_size).text = "3 0.08"
 
-    segments = build_arc(
-        radius=1.0,
-        total_angle_deg=45.0,
-        segment_count=15,
+    radius = 1.0
+    straight_length = 3.0
+
+    first_arc = build_arc(
+        radius=radius,
+        total_angle_deg=180.0,
+        segment_count=60,
         overlap=0.004,
     )
 
-    for i, (x, y, yaw, length) in enumerate(segments):
+    # Each entry contains: name, x, y, yaw, length.
+    sections = [
+        (f"arc_right_{i:02d}", x, y, yaw, length)
+        for i, (x, y, yaw, length) in enumerate(first_arc)
+    ]
+
+    sections.append(
+        ("return_straight", -straight_length / 2, 2 * radius, 0.0, straight_length)
+    )
+
+    for i, (x, y, yaw, length) in enumerate(first_arc):
+        sections.append((
+            f"arc_left_{i:02d}",
+            -straight_length - x,
+            2 * radius - y,
+            yaw - math.pi,
+            length,
+        ))
+
+    for name, x, y, yaw, length in sections:
         model = deepcopy(template)
-        model.set("name", f"arc_{i:02d}")
+        model.set("name", name)
         model.find("pose").text = f"{x:.6f} {y:.6f} 0.001 0 0 {yaw:.6f}"
         model.find(plane_size).text = f"{length:.6f} 0.08"
         world.append(model)
