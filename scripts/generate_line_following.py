@@ -44,7 +44,7 @@ def build_arc(radius, total_angle_deg, segment_count, overlap):
 
 def main():
     source = WORLD_DIR / "line_following.sdf"
-    target = WORLD_DIR / "line_following_oval.sdf"
+    target = WORLD_DIR / "line_following_oval_tight.sdf"
 
     tree = ET.parse(source)
     world = tree.getroot().find("world")
@@ -54,12 +54,13 @@ def main():
     # Keep the visual and material as a template for the arc strips.
     template = deepcopy(straight)
 
-    # The straight section now runs from x = -3 to x = 0.
-    straight.find("pose").text = "-1.5 0 0.001 0 0 0"
-    straight.find(plane_size).text = "3 0.08"
-
     radius = 1.0
     straight_length = 3.0
+    line_width = 0.08
+
+    # The straight section runs from x = -straight_length to x = 0.
+    straight.find("pose").text = f"{-straight_length / 2:.6f} 0 0.001 0 0 0"
+    straight.find(plane_size).text = f"{straight_length:.6f} {line_width:.6f}"
 
     first_arc = build_arc(
         radius=radius,
@@ -91,7 +92,7 @@ def main():
         model = deepcopy(template)
         model.set("name", name)
         model.find("pose").text = f"{x:.6f} {y:.6f} 0.001 0 0 {yaw:.6f}"
-        model.find(plane_size).text = f"{length:.6f} 0.08"
+        model.find(plane_size).text = f"{length:.6f} {line_width:.6f}"
         world.append(model)
 
     ET.indent(tree, space="  ")

@@ -1,0 +1,2244 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.9">
+  <world name="line_following">
+    <gravity>0 0 -9.81</gravity>
+    <physics name="default_physics" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <light name="sun" type="directional">
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+      <cast_shadows>false</cast_shadows>
+    </light>
+    <model name="ground">
+      <static>true</static>
+      <link name="ground_link">
+        <collision name="ground_collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="ground_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>10 10</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="straight_line">
+      <static>true</static>
+      <pose>-1.500000 0 0.001 0 0 0</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>3.000000 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_00">
+      <static>true</static>
+      <pose>0.026168 0.000685 0.001 0 0 0.026180</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_01">
+      <static>true</static>
+      <pose>0.078432 0.003424 0.001 0 0 0.078540</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_02">
+      <static>true</static>
+      <pose>0.130481 0.008895 0.001 0 0 0.130900</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_03">
+      <static>true</static>
+      <pose>0.182173 0.017082 0.001 0 0 0.183260</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_04">
+      <static>true</static>
+      <pose>0.233365 0.027963 0.001 0 0 0.235619</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_05">
+      <static>true</static>
+      <pose>0.283918 0.041509 0.001 0 0 0.287979</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_06">
+      <static>true</static>
+      <pose>0.333692 0.057682 0.001 0 0 0.340339</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_07">
+      <static>true</static>
+      <pose>0.382552 0.076437 0.001 0 0 0.392699</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_08">
+      <static>true</static>
+      <pose>0.430364 0.097724 0.001 0 0 0.445059</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_09">
+      <static>true</static>
+      <pose>0.476995 0.121484 0.001 0 0 0.497419</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_10">
+      <static>true</static>
+      <pose>0.522320 0.147652 0.001 0 0 0.549779</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_11">
+      <static>true</static>
+      <pose>0.566212 0.176156 0.001 0 0 0.602139</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_12">
+      <static>true</static>
+      <pose>0.608553 0.206919 0.001 0 0 0.654498</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_13">
+      <static>true</static>
+      <pose>0.649225 0.239855 0.001 0 0 0.706858</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_14">
+      <static>true</static>
+      <pose>0.688119 0.274874 0.001 0 0 0.759218</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_15">
+      <static>true</static>
+      <pose>0.725126 0.311881 0.001 0 0 0.811578</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_16">
+      <static>true</static>
+      <pose>0.760145 0.350775 0.001 0 0 0.863938</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_17">
+      <static>true</static>
+      <pose>0.793081 0.391447 0.001 0 0 0.916298</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_18">
+      <static>true</static>
+      <pose>0.823844 0.433788 0.001 0 0 0.968658</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_19">
+      <static>true</static>
+      <pose>0.852348 0.477680 0.001 0 0 1.021018</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_20">
+      <static>true</static>
+      <pose>0.878516 0.523005 0.001 0 0 1.073377</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_21">
+      <static>true</static>
+      <pose>0.902276 0.569636 0.001 0 0 1.125737</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_22">
+      <static>true</static>
+      <pose>0.923563 0.617448 0.001 0 0 1.178097</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_23">
+      <static>true</static>
+      <pose>0.942318 0.666308 0.001 0 0 1.230457</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_24">
+      <static>true</static>
+      <pose>0.958491 0.716082 0.001 0 0 1.282817</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_25">
+      <static>true</static>
+      <pose>0.972037 0.766635 0.001 0 0 1.335177</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_26">
+      <static>true</static>
+      <pose>0.982918 0.817827 0.001 0 0 1.387537</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_27">
+      <static>true</static>
+      <pose>0.991105 0.869519 0.001 0 0 1.439897</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_28">
+      <static>true</static>
+      <pose>0.996576 0.921568 0.001 0 0 1.492257</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_29">
+      <static>true</static>
+      <pose>0.999315 0.973832 0.001 0 0 1.544616</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_30">
+      <static>true</static>
+      <pose>0.999315 1.026168 0.001 0 0 1.596976</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_31">
+      <static>true</static>
+      <pose>0.996576 1.078432 0.001 0 0 1.649336</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_32">
+      <static>true</static>
+      <pose>0.991105 1.130481 0.001 0 0 1.701696</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_33">
+      <static>true</static>
+      <pose>0.982918 1.182173 0.001 0 0 1.754056</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_34">
+      <static>true</static>
+      <pose>0.972037 1.233365 0.001 0 0 1.806416</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_35">
+      <static>true</static>
+      <pose>0.958491 1.283918 0.001 0 0 1.858776</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_36">
+      <static>true</static>
+      <pose>0.942318 1.333692 0.001 0 0 1.911136</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_37">
+      <static>true</static>
+      <pose>0.923563 1.382552 0.001 0 0 1.963495</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_38">
+      <static>true</static>
+      <pose>0.902276 1.430364 0.001 0 0 2.015855</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_39">
+      <static>true</static>
+      <pose>0.878516 1.476995 0.001 0 0 2.068215</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_40">
+      <static>true</static>
+      <pose>0.852348 1.522320 0.001 0 0 2.120575</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_41">
+      <static>true</static>
+      <pose>0.823844 1.566212 0.001 0 0 2.172935</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_42">
+      <static>true</static>
+      <pose>0.793081 1.608553 0.001 0 0 2.225295</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_43">
+      <static>true</static>
+      <pose>0.760145 1.649225 0.001 0 0 2.277655</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_44">
+      <static>true</static>
+      <pose>0.725126 1.688119 0.001 0 0 2.330015</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_45">
+      <static>true</static>
+      <pose>0.688119 1.725126 0.001 0 0 2.382374</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_46">
+      <static>true</static>
+      <pose>0.649225 1.760145 0.001 0 0 2.434734</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_47">
+      <static>true</static>
+      <pose>0.608553 1.793081 0.001 0 0 2.487094</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_48">
+      <static>true</static>
+      <pose>0.566212 1.823844 0.001 0 0 2.539454</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_49">
+      <static>true</static>
+      <pose>0.522320 1.852348 0.001 0 0 2.591814</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_50">
+      <static>true</static>
+      <pose>0.476995 1.878516 0.001 0 0 2.644174</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_51">
+      <static>true</static>
+      <pose>0.430364 1.902276 0.001 0 0 2.696534</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_52">
+      <static>true</static>
+      <pose>0.382552 1.923563 0.001 0 0 2.748894</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_53">
+      <static>true</static>
+      <pose>0.333692 1.942318 0.001 0 0 2.801253</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_54">
+      <static>true</static>
+      <pose>0.283918 1.958491 0.001 0 0 2.853613</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_55">
+      <static>true</static>
+      <pose>0.233365 1.972037 0.001 0 0 2.905973</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_56">
+      <static>true</static>
+      <pose>0.182173 1.982918 0.001 0 0 2.958333</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_57">
+      <static>true</static>
+      <pose>0.130481 1.991105 0.001 0 0 3.010693</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_58">
+      <static>true</static>
+      <pose>0.078432 1.996576 0.001 0 0 3.063053</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_right_59">
+      <static>true</static>
+      <pose>0.026168 1.999315 0.001 0 0 3.115413</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="return_straight">
+      <static>true</static>
+      <pose>-1.500000 2.000000 0.001 0 0 0.000000</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>3.000000 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_00">
+      <static>true</static>
+      <pose>-3.026168 1.999315 0.001 0 0 -3.115413</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_01">
+      <static>true</static>
+      <pose>-3.078432 1.996576 0.001 0 0 -3.063053</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_02">
+      <static>true</static>
+      <pose>-3.130481 1.991105 0.001 0 0 -3.010693</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_03">
+      <static>true</static>
+      <pose>-3.182173 1.982918 0.001 0 0 -2.958333</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_04">
+      <static>true</static>
+      <pose>-3.233365 1.972037 0.001 0 0 -2.905973</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_05">
+      <static>true</static>
+      <pose>-3.283918 1.958491 0.001 0 0 -2.853613</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_06">
+      <static>true</static>
+      <pose>-3.333692 1.942318 0.001 0 0 -2.801253</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_07">
+      <static>true</static>
+      <pose>-3.382552 1.923563 0.001 0 0 -2.748894</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_08">
+      <static>true</static>
+      <pose>-3.430364 1.902276 0.001 0 0 -2.696534</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_09">
+      <static>true</static>
+      <pose>-3.476995 1.878516 0.001 0 0 -2.644174</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_10">
+      <static>true</static>
+      <pose>-3.522320 1.852348 0.001 0 0 -2.591814</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_11">
+      <static>true</static>
+      <pose>-3.566212 1.823844 0.001 0 0 -2.539454</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_12">
+      <static>true</static>
+      <pose>-3.608553 1.793081 0.001 0 0 -2.487094</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_13">
+      <static>true</static>
+      <pose>-3.649225 1.760145 0.001 0 0 -2.434734</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_14">
+      <static>true</static>
+      <pose>-3.688119 1.725126 0.001 0 0 -2.382374</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_15">
+      <static>true</static>
+      <pose>-3.725126 1.688119 0.001 0 0 -2.330015</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_16">
+      <static>true</static>
+      <pose>-3.760145 1.649225 0.001 0 0 -2.277655</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_17">
+      <static>true</static>
+      <pose>-3.793081 1.608553 0.001 0 0 -2.225295</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_18">
+      <static>true</static>
+      <pose>-3.823844 1.566212 0.001 0 0 -2.172935</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_19">
+      <static>true</static>
+      <pose>-3.852348 1.522320 0.001 0 0 -2.120575</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_20">
+      <static>true</static>
+      <pose>-3.878516 1.476995 0.001 0 0 -2.068215</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_21">
+      <static>true</static>
+      <pose>-3.902276 1.430364 0.001 0 0 -2.015855</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_22">
+      <static>true</static>
+      <pose>-3.923563 1.382552 0.001 0 0 -1.963495</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_23">
+      <static>true</static>
+      <pose>-3.942318 1.333692 0.001 0 0 -1.911136</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_24">
+      <static>true</static>
+      <pose>-3.958491 1.283918 0.001 0 0 -1.858776</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_25">
+      <static>true</static>
+      <pose>-3.972037 1.233365 0.001 0 0 -1.806416</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_26">
+      <static>true</static>
+      <pose>-3.982918 1.182173 0.001 0 0 -1.754056</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_27">
+      <static>true</static>
+      <pose>-3.991105 1.130481 0.001 0 0 -1.701696</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_28">
+      <static>true</static>
+      <pose>-3.996576 1.078432 0.001 0 0 -1.649336</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_29">
+      <static>true</static>
+      <pose>-3.999315 1.026168 0.001 0 0 -1.596976</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_30">
+      <static>true</static>
+      <pose>-3.999315 0.973832 0.001 0 0 -1.544616</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_31">
+      <static>true</static>
+      <pose>-3.996576 0.921568 0.001 0 0 -1.492257</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_32">
+      <static>true</static>
+      <pose>-3.991105 0.869519 0.001 0 0 -1.439897</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_33">
+      <static>true</static>
+      <pose>-3.982918 0.817827 0.001 0 0 -1.387537</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_34">
+      <static>true</static>
+      <pose>-3.972037 0.766635 0.001 0 0 -1.335177</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_35">
+      <static>true</static>
+      <pose>-3.958491 0.716082 0.001 0 0 -1.282817</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_36">
+      <static>true</static>
+      <pose>-3.942318 0.666308 0.001 0 0 -1.230457</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_37">
+      <static>true</static>
+      <pose>-3.923563 0.617448 0.001 0 0 -1.178097</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_38">
+      <static>true</static>
+      <pose>-3.902276 0.569636 0.001 0 0 -1.125737</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_39">
+      <static>true</static>
+      <pose>-3.878516 0.523005 0.001 0 0 -1.073377</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_40">
+      <static>true</static>
+      <pose>-3.852348 0.477680 0.001 0 0 -1.021018</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_41">
+      <static>true</static>
+      <pose>-3.823844 0.433788 0.001 0 0 -0.968658</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_42">
+      <static>true</static>
+      <pose>-3.793081 0.391447 0.001 0 0 -0.916298</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_43">
+      <static>true</static>
+      <pose>-3.760145 0.350775 0.001 0 0 -0.863938</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_44">
+      <static>true</static>
+      <pose>-3.725126 0.311881 0.001 0 0 -0.811578</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_45">
+      <static>true</static>
+      <pose>-3.688119 0.274874 0.001 0 0 -0.759218</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_46">
+      <static>true</static>
+      <pose>-3.649225 0.239855 0.001 0 0 -0.706858</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_47">
+      <static>true</static>
+      <pose>-3.608553 0.206919 0.001 0 0 -0.654498</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_48">
+      <static>true</static>
+      <pose>-3.566212 0.176156 0.001 0 0 -0.602139</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_49">
+      <static>true</static>
+      <pose>-3.522320 0.147652 0.001 0 0 -0.549779</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_50">
+      <static>true</static>
+      <pose>-3.476995 0.121484 0.001 0 0 -0.497419</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_51">
+      <static>true</static>
+      <pose>-3.430364 0.097724 0.001 0 0 -0.445059</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_52">
+      <static>true</static>
+      <pose>-3.382552 0.076437 0.001 0 0 -0.392699</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_53">
+      <static>true</static>
+      <pose>-3.333692 0.057682 0.001 0 0 -0.340339</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_54">
+      <static>true</static>
+      <pose>-3.283918 0.041509 0.001 0 0 -0.287979</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_55">
+      <static>true</static>
+      <pose>-3.233365 0.027963 0.001 0 0 -0.235619</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_56">
+      <static>true</static>
+      <pose>-3.182173 0.017082 0.001 0 0 -0.183260</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_57">
+      <static>true</static>
+      <pose>-3.130481 0.008895 0.001 0 0 -0.130900</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_58">
+      <static>true</static>
+      <pose>-3.078432 0.003424 0.001 0 0 -0.078540</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="arc_left_59">
+      <static>true</static>
+      <pose>-3.026168 0.000685 0.001 0 0 -0.026180</pose>
+      <link name="line_link">
+        <visual name="line_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>0.056354 0.120000</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

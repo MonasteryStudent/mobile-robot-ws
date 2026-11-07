@@ -40,16 +40,16 @@ class LineFollower(Node):
         command = Twist()
 
         if self.left_on_line and self.right_on_line:
-            # Both dark: stop for now.
+            # Both dark: stop.
             pass
         elif self.left_on_line:
-            command.linear.x = 0.03
-            command.angular.z = 0.2
+            command.linear.x = 0.06
+            command.angular.z = 0.1
         elif self.right_on_line:
-            command.linear.x = 0.03
-            command.angular.z = -0.2
+            command.linear.x = 0.06
+            command.angular.z = -0.1
         elif self.center_on_line:
-            command.linear.x = 0.05
+            command.linear.x = 0.10
         # Otherwise all three sensors are light: keep the stop command.
 
         self.velocity_publisher.publish(command)
@@ -59,6 +59,7 @@ class LineFollower(Node):
             msg,
             desired_encoding="mono8",
         )
+
         left_region = image[110:130, 70:90]
         right_region = image[110:130, 230:250]
         center_region = image[110:130, 150:170]
