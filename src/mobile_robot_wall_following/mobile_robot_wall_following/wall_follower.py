@@ -13,6 +13,11 @@ class WallFollower(Node):
 
         self.first_scan_received = False
 
+        self.sensor_log_timer = self.create_timer(
+            1.0,
+            self.log_sensor_values,
+        )
+
         self.scan_subscription = self.create_subscription(
             LaserScan,
             "/scan",
@@ -45,22 +50,26 @@ class WallFollower(Node):
             self.get_logger().info(
                 f"First scan received: {num_ranges} ranges"
             )
-            min_deg_f = -5.0
-            max_deg_f = 5.0
-            min_distance_front = self.sector_distance(
-                msg, min_deg_f, max_deg_f)
-            self.get_logger().info(
-                f"Minimum distance front ({min_deg_f}, {max_deg_f}): {min_distance_front}"
-            )
-            min_deg_r = -95.0
-            max_deg_r = -85.0
-            min_distance_right = self.sector_distance(
-                msg, min_deg_r, max_deg_r)
-            self.get_logger().info(
-                f"Minimum distance right ({min_deg_r}, {max_deg_r}): {min_distance_right}"
-            )
-
             self.first_scan_received = True
+
+        min_deg_front = -5.0
+        max_deg_front = 5.0
+        min_deg_right = -95.0
+        max_deg_right = -85.0
+
+        self.distance_front = self.sector_distance(
+            msg, min_deg_front, max_deg_front)
+        self.distance_right = self.sector_distance(
+            msg, min_deg_right, max_deg_right)
+
+    def log_sensor_values(self):
+        if self.first_scan_received:
+            self.get_logger().info(
+                f"Distance front: {self.distance_front}"
+            )
+            self.get_logger().info(
+                f"Distance right: {self.distance_right}"
+                )
 
 
 def main(args=None):
