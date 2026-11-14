@@ -9,6 +9,9 @@ from sensor_msgs.msg import Image
 
 
 class LineFollower(Node):
+    """Follow a dark line using three regions 
+    of a downward-facing camera image."""
+    
     def __init__(self):
         super().__init__("line_follower")
 
@@ -37,6 +40,7 @@ class LineFollower(Node):
         )
 
     def follow_line(self):
+        """Publish a velocity command based on the three sensor states."""
         command = Twist()
 
         if self.left_on_line and self.right_on_line:
@@ -55,6 +59,8 @@ class LineFollower(Node):
         self.velocity_publisher.publish(command)
 
     def image_callback(self, msg):
+        """Convert the image to grayscale, classify the three regions, 
+        and call the controller."""
         image = self.bridge.imgmsg_to_cv2(
             msg,
             desired_encoding="mono8",
@@ -82,6 +88,8 @@ class LineFollower(Node):
             self.first_image_received = True
 
     def log_sensor_values(self):
+        """Log the brightness and state of each sensor region 
+        once an image is available."""
         if (
             self.left_brightness is None
             or self.right_brightness is None
