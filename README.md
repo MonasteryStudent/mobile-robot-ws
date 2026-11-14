@@ -2,6 +2,10 @@
 
 A learning project focused on developing a mobile robotic system with ROS 2.
 
+## Project Goals
+
+- Extend the system toward localization, SLAM, and autonomous navigation using the Nav2 stack.
+
 ## Current Status
 
 - Custom robot description created using URDF and Xacro.
@@ -12,9 +16,9 @@ A learning project focused on developing a mobile robotic system with ROS 2.
 - Downward-facing camera simulated in Gazebo, with images bridged to ROS 2.
 - Basic line following implemented using three virtual sensor regions in the camera image, including steering corrections and stopping when no line is detected.
 
-## Project Goals
+### Work in Progress: Wall Following
 
-- Extend the system toward localization, SLAM, and autonomous navigation using the Nav2 stack.
+The goal is to navigate a maze by following the wall on the robot's right.
 
 ## Workspace Structure
 
@@ -27,7 +31,8 @@ mobile-robot-ws/
     ├── mobile_robot_description/
     ├── mobile_robot_interfaces/
     ├── mobile_robot_line_following/
-    └── mobile_robot_navigation/
+    ├── mobile_robot_navigation/
+    └── mobile_robot_wall_following/
 ```
 
 ## Requirements
