@@ -7,6 +7,7 @@
   <maintainer email="181945253+MonasteryStudent@users.noreply.github.com">cs_kn</maintainer>
   <license>TODO: License declaration</license>
 
+  <depend>nav_msgs</depend>
   <depend>rclpy</depend>
   <depend>sensor_msgs</depend>
   <depend>geometry_msgs</depend>

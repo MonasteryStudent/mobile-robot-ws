@@ -3,6 +3,7 @@
 import math
 
 from geometry_msgs.msg import Twist
+from nav_msgs.msg import Odometry
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import qos_profile_sensor_data
@@ -15,6 +16,21 @@ class WallFollower(Node):
 
         self.first_scan_received = False
         self.hit = None
+
+        self.previous_position = None
+        self.traveled_distance = 0.0
+
+        self.correction_start_distance = None
+        self.correction_start_time = None
+        self.left_parallel_band = False
+        self.experiment_finished = False        
+
+        self.odom_subscription = self.create_subscription(
+            Odometry,
+            "/odom",
+            self.odom_callback,
+            10
+        )
 
         self.sensor_log_timer = self.create_timer(
             1.0,
@@ -34,9 +50,27 @@ class WallFollower(Node):
             10
         )
 
+    def odom_callback(self, msg):
+        x = msg.pose.pose.position.x
+        y = msg.pose.pose.position.y
+
+        if self.previous_position is None:
+            self.previous_position = (x, y)
+            return
+        
+        self.traveled_distance += math.hypot(
+            x - self.previous_position[0], 
+            y - self.previous_position[1]
+        )
+
+        self.previous_position = (x, y)
+
     def follow_wall(self):
-        """Publish a velocity command based on the front and right distances."""
+        """Return a velocity command from the latest scan distances."""
         command = Twist()
+
+        if self.distance_right is None or self.hit is None:
+            return command
 
         target_distance = 0.80
         distance_tolerance = 0.05
@@ -47,27 +81,34 @@ class WallFollower(Node):
         turn_rate = 0.10
 
         wall_infront = self.distance_front is not None
-        right_wall = self.distance_right is not None
 
-        if not right_wall:
-            # Stop for now.
-            pass
-        elif wall_infront and (self.distance_front < front_turn_distance):
+        _, angle = self.hit
+
+        target_angle = math.radians(-90)
+        angle_tolerance = math.radians(10)
+
+        if wall_infront and (self.distance_front < front_turn_distance):
             # Turn left.
             command.linear.x = turn_speed
             command.angular.z = turn_rate          
         elif self.distance_right < target_distance - distance_tolerance:
             # Turn left.
+            if target_angle - angle_tolerance < angle:
+                command.angular.z = turn_rate / 3.0
+            else:
+                command.angular.z = turn_rate
             command.linear.x = turn_speed
-            command.angular.z = turn_rate
         elif self.distance_right > target_distance + distance_tolerance:
             # Turn right.
+            if target_angle + angle_tolerance < angle:
+                command.angular.z = -turn_rate / 3.0
+            else:
+                command.angular.z = -turn_rate
             command.linear.x = turn_speed
-            command.angular.z = -turn_rate
         else:
             command.linear.x = straight_speed
 
-        self.velocity_publisher.publish(command)
+        return command
 
     def closest_hit(self, msg):
         """Return the nearest valid hit as (distance, angle in radians), or None."""
@@ -78,8 +119,8 @@ class WallFollower(Node):
                 msg.range_min <= distance <= msg.range_max
                 and distance < min_distance
             ):
-                    min_distance = distance
-                    min_distance_index = i
+                min_distance = distance
+                min_distance_index = i
 
         if min_distance == float('inf'):
             return None
@@ -130,6 +171,39 @@ class WallFollower(Node):
 
         return min_distance
 
+    def update_experiment(self, command, stamp):
+        """Measure the distance and time from the first right turn to realignment."""
+        if self.hit is None or self.previous_position is None:
+            return
+
+        scan_time = stamp.sec + stamp.nanosec / 1_000_000_000
+        wall_distance, angle = self.hit
+        is_parallel = abs(angle - math.radians(-90)) <= math.radians(3)
+
+        if self.correction_start_distance is None:
+            if command.angular.z < 0.0:
+                self.correction_start_distance = self.traveled_distance
+                self.correction_start_time = scan_time
+            return
+
+        if not is_parallel:
+            self.left_parallel_band = True
+            return
+
+        if self.left_parallel_band:
+            correction_distance = (
+                self.traveled_distance - self.correction_start_distance
+            )
+            elapsed_seconds = scan_time - self.correction_start_time
+
+            self.get_logger().info(
+                f"Parallel again after {correction_distance:.3f} m "
+                f"and {elapsed_seconds:.1f} s; "
+                f"wall distance: {wall_distance:.3f} m; "
+                f"hit angle: {math.degrees(angle):.1f}°"
+            )
+            self.experiment_finished = True
+
     def scan_callback(self, msg):
         """Process the scan and publish one velocity command."""
         if not self.first_scan_received:
@@ -141,47 +215,50 @@ class WallFollower(Node):
 
         self.hit = self.closest_hit(msg)
 
+        min_deg_front = -5.0
+        max_deg_front = 5.0
+        min_deg_right = -95.0
+        max_deg_right = -85.0
+
+        self.distance_front = self.sector_distance(
+            msg, min_deg_front, max_deg_front)
+        self.distance_right = self.sector_distance(
+            msg, min_deg_right, max_deg_right)
+
         command = Twist()
 
-        if self.hit is not None:
-            angle_tolerance = math.radians(3.0)
-            distance, angle = self.hit
+        if self.previous_position is not None and not self.experiment_finished:
+            command = self.follow_wall()
+            self.update_experiment(command, msg.header.stamp)
 
-            if abs(angle) > angle_tolerance:
-                self.turn_toward_wall(angle, angle_tolerance, command)
-            else:
-                self.drive_to_wall(distance, command)
-            
+            if self.experiment_finished:
+                command = Twist()
+        
         self.velocity_publisher.publish(command)
 
-        # Re-enable sector-based wall following after parallel alignment.
-
-        # min_deg_front = -5.0
-        # max_deg_front = 5.0
-        # min_deg_right = -95.0
-        # max_deg_right = -85.0
-
-        # self.distance_front = self.sector_distance(
-        #     msg, min_deg_front, max_deg_front)
-        # self.distance_right = self.sector_distance(
-        #     msg, min_deg_right, max_deg_right)
-        
-        # self.follow_wall()
-
     def log_sensor_values(self):
-        """Log the distance and bearing of the latest valid hit."""
-        if self.first_scan_received:
-            # self.get_logger().info(
-            #     f"Distance front: {self.distance_front}"
-            # )
-            # self.get_logger().info(
-            #     f"Distance right: {self.distance_right}"
-            #     )
-            if self.hit is not None:
-                distance, angle = self.hit
-                self.get_logger().info(
-                    f"Closest hit: {distance:.3f} m at {math.degrees(angle):.1f}° "
-                )
+        """Log the latest front and right distances."""
+        if not self.first_scan_received or self.experiment_finished:
+            return
+
+        front = self.distance_front
+        right = self.distance_right
+        front_text = "no hit" if front is None else f"{front:.2f} m"
+        right_text = "no hit" if right is None else f"{right:.2f} m"
+        
+        self.get_logger().info(
+            f"Front: {front_text}, right: {right_text}"
+        )
+
+        if self.hit is not None:
+            distance, angle = self.hit
+            self.get_logger().info(
+                f"Hit distance: {distance:.2f} m, hit angle: {math.degrees(angle):.2f}°"
+            )
+
+        self.get_logger().info(
+            f"Traveled distance: {self.traveled_distance:.2f} m"
+        )
 
 
 def main(args=None):
